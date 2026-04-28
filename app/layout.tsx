@@ -25,6 +25,11 @@ export const metadata: Metadata = {
     default: "Tap2Enter — Stop filling out the same form. Every. Single. Time.",
     template: "%s · Tap2Enter",
   },
+  icons: {
+    icon: "/logo.png", // Pfad zu deiner Datei
+    shortcut: "/logo.png",
+    apple: "/logo.png", // Optional für iOS
+  },
   description:
     "Tap2Enter replaces paper forms at events with a single QR scan. Scan once. Enter once. Done. Built for giveaways, contests, and lead capture at real-world events.",
   keywords: [
