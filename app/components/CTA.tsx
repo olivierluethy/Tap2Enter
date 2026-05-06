@@ -38,17 +38,18 @@ export default function CTA() {
               href="#how-it-works"
               event="demo_click"
               eventParams={{ location: "cta" }}
+              triggerSource="demo_other"
               variant="primary"
             >
               <PlayCircle className="size-5" />
               See Demo
             </TrackedButton>
             <TrackedButton
-              href="mailto:hello@tap2enter.com?subject=Early%20Access"
+              href="#cta"
               event="early_access_click"
               eventParams={{ location: "cta" }}
+              triggerSource="early_access_cta"
               variant="secondary"
-              external
             >
               Get Early Access
               <ArrowRight className="size-4" />

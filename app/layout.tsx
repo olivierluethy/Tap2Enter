@@ -4,6 +4,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import ScrollDepthTracker from "./components/ScrollDepthTracker";
+import { LeadModalProvider } from "./components/LeadModalProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -85,7 +86,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        {children}
+        <LeadModalProvider>{children}</LeadModalProvider>
         <ScrollDepthTracker />
         {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
         <Analytics />

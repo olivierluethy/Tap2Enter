@@ -59,6 +59,7 @@ export default function Hero() {
               href="#how-it-works"
               event="demo_click"
               eventParams={{ location: "hero" }}
+              triggerSource="demo_hero"
               variant="primary"
             >
               <PlayCircle className="size-5" />
@@ -68,6 +69,7 @@ export default function Hero() {
               href="#cta"
               event="early_access_click"
               eventParams={{ location: "hero" }}
+              triggerSource="early_access_hero"
               variant="secondary"
             >
               Get Early Access

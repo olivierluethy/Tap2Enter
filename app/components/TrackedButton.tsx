@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps, MouseEvent, ReactNode } from "react";
 import { trackEvent } from "../lib/analytics";
+import { trackClick, type TriggerSource } from "../lib/leadCapture";
+import { useLeadModal } from "./LeadModalProvider";
 
 type Variant = "primary" | "secondary";
 
@@ -14,6 +16,11 @@ type Props = {
   className?: string;
   external?: boolean;
   eventParams?: Record<string, string | number | boolean | undefined>;
+  /**
+   * When set, the click is intercepted: anchor navigation is suppressed,
+   * a server-side click is recorded, and the lead modal opens.
+   */
+  triggerSource?: TriggerSource;
 } & Omit<ComponentProps<typeof Link>, "href">;
 
 export default function TrackedButton({
@@ -24,6 +31,7 @@ export default function TrackedButton({
   className = "",
   external = false,
   eventParams,
+  triggerSource,
   ...rest
 }: Props) {
   const base =
@@ -31,7 +39,26 @@ export default function TrackedButton({
   const styles = variant === "primary" ? "btn-primary" : "btn-secondary";
   const cls = `${base} ${styles} ${className}`.trim();
 
-  const onClick = () => trackEvent(event, eventParams);
+  const modal = useLeadModal();
+
+  const onClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    trackEvent(event, eventParams);
+
+    if (triggerSource) {
+      e.preventDefault();
+      // Open the modal immediately so it never feels laggy. Resolve the
+      // lead_id in the background and patch it in once the request returns.
+      modal.open({ trigger: triggerSource, leadId: null });
+      trackClick(triggerSource).then((res) => {
+        if (res.ok) {
+          modal.setLeadId({ trigger: triggerSource, leadId: res.leadId });
+        } else {
+          // Spec: don't bother the user on track failures, just log.
+          console.warn("[t2e] track-click failed");
+        }
+      });
+    }
+  };
 
   if (external) {
     return (

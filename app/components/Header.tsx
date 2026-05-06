@@ -31,6 +31,7 @@ export default function Header() {
           href="#cta"
           event="early_access_click"
           eventParams={{ location: "header" }}
+          triggerSource="early_access_nav"
           variant="primary"
           className="!h-10 !px-4 text-sm"
         >
